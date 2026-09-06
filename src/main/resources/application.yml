@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: Wallet-Service-API
+  datasource:
+    url: "jdbc:h2:mem:testdb\t"
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+jwt:
+  secret: 7fK9mQ2xL8vR4nT6pZ1aW5sY3uE0cH8dG6jN2bV9xP4rM7q
+  expiration: 900000
