@@ -55,7 +55,7 @@ public class WalletServiceImpl implements WalletService {
 		@Nullable
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
-		System.out.println(user);
+
 		//  Lock user's wallet
 		Wallet wallet = walletRepository.findByUserIdForUpdate(user.getId())
 				.orElseThrow(() -> new WalletNotFoundException("Wallet not found"));
@@ -109,15 +109,18 @@ public class WalletServiceImpl implements WalletService {
 
 		if (senderWallet.getId() < receiverWallet.getId()) {
 
-			firstWallet = walletRepository.findByIdForUpdate(senderWallet.getId()).orElseThrow();
+			firstWallet = walletRepository.findByIdForUpdate(senderWallet.getId()).orElseThrow(() ->
+		    new WalletNotFoundException("Sender wallet not found"));
 
-			secondWallet = walletRepository.findByIdForUpdate(receiverWallet.getId()).orElseThrow();
-
+			secondWallet = walletRepository.findByIdForUpdate(receiverWallet.getId()).orElseThrow(() ->
+		    new WalletNotFoundException("Sender wallet not found"));
 		} else {
 
-			firstWallet = walletRepository.findByIdForUpdate(receiverWallet.getId()).orElseThrow();
+			firstWallet = walletRepository.findByIdForUpdate(receiverWallet.getId()).orElseThrow(() ->
+		    new WalletNotFoundException("Sender wallet not found"));
 
-			secondWallet = walletRepository.findByIdForUpdate(senderWallet.getId()).orElseThrow();
+			secondWallet = walletRepository.findByIdForUpdate(senderWallet.getId()).orElseThrow(() ->
+		    new WalletNotFoundException("Sender wallet not found"));
 		}
 
 		// Identify locked sender/receiver

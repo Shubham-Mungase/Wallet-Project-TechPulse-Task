@@ -19,6 +19,7 @@ import com.wallet.dto.response.WalletResponsese;
 import com.wallet.service.WalletService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -31,7 +32,7 @@ public class WalletController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<WalletResponsese>> addMoney(
             @Valid @RequestBody AddMoneyRequest request,
-            @RequestHeader("Idempotency-Key") String idempotencyKey) {
+            @RequestHeader("Idempotency-Key") @NotBlank(message = "Idempotency-Key is required") String idempotencyKey) {
 
         WalletResponsese response =
                 walletService.addMoney(request, idempotencyKey);
@@ -48,7 +49,7 @@ public class WalletController {
     @PostMapping("/transfer")
     public ResponseEntity<ApiResponse<TransactionResponse>> transfer(
             @Valid @RequestBody TransferRequest request,
-            @RequestHeader("Idempotency-Key") String idempotencyKey) {
+            @RequestHeader("Idempotency-Key")@NotBlank(message = "Idempotency-Key is required") String idempotencyKey) {
 
         TransactionResponse response =
                 walletService.transfer(request, idempotencyKey);
