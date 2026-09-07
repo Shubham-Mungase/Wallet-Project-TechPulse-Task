@@ -25,7 +25,7 @@ src/main/java/com/wallet/
   security/              # JWT/security configuration
   dto/                   # request/response payloads
   exceptions/            # custom exceptions and handlers
-src/main/resources/      # application properties (H2, JPA settings)
+src/main/resources/      # application yml (H2, JPA settings)
 src/test/                # unit / integration tests
 ```
 
@@ -46,11 +46,11 @@ Make sure Java 21 and a working internet connection (for Maven) are available.
 ./mvnw spring-boot:run
 ```
 
-- H2 console (when enabled in properties) is typically at http://localhost:8080/h2-console
+- H2 console (when enabled in yml) is typically at http://localhost:8080/h2-console
 - OpenAPI/Swagger UI is typically at http://localhost:8080/swagger-ui/index.html
 
 ## Database
-- The project uses H2 (runtime) for development. Check `src/main/resources/application*.properties` for the concrete datasource URL and JPA ddl settings.
+- The project uses H2 (runtime) for development. Check `src/main/resources/application*.yml` for the concrete datasource URL and JPA ddl settings.
 - There is no Flyway/Liquibase configured; consider adding one for production schema management.
 
 ## Entities & relationships (summary)
@@ -76,21 +76,8 @@ Make sure Java 21 and a working internet connection (for Maven) are available.
 ## Security
 - Spring Security + jjwt dependencies are included. Check `src/main/java/com/wallet/security` for filter, token provider, and configuration to see the exact endpoints and roles that are secured.
 
-## Development notes / TODOs
-- Add a README section with endpoint examples and expected request/response JSON where useful.
-- Add a GitHub Actions workflow to run `./mvnw clean verify` and publish to Sonar with the coverage gate enforced in CI.
-- Add DB migrations (Flyway/Liquibase) if you plan to run on a persistent RDBMS in staging/production.
-- Add integration tests that simulate concurrent wallet updates to validate locking strategy.
-
 ## Where to look next (useful commands)
 - Run unit tests: `./mvnw test`
 - Run the app: `./mvnw spring-boot:run`
 - Run Sonar scan locally (requires Sonar server & token):
   `./mvnw sonar:sonar -Dsonar.host.url=<SONAR_URL> -Dsonar.login=<TOKEN>`
-
----
-
-If you'd like, I can:
-- add example curl requests for the public endpoints,
-- create a GitHub Actions workflow to run tests/coverage and publish to Sonar,
-- or inspect and update the entities to add optimistic locking and corresponding tests.
