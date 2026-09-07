@@ -413,7 +413,7 @@ The project includes the Maven Wrapper, so Maven does not need to be installed s
 ## Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone https://github.com/Shubham-Mungase/Wallet-Project-TechPulse-Task
 cd Wallet-Service
 ```
 
