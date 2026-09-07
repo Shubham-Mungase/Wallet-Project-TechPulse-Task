@@ -545,10 +545,10 @@ The JWT returned from login is required for protected wallet and admin APIs.
 
 | Method | Endpoint               | Authentication | Description                                         |
 | ------ | ---------------------- | -------------- | --------------------------------------------------- |
-| `POST` | `/wallet/add`          | ✅ JWT          | Add money to the authenticated user's wallet        |
-| `POST` | `/wallet/transfer`     | ✅ JWT          | Transfer money to another user's wallet             |
-| `GET`  | `/wallet`              | ✅ JWT          | Get the authenticated user's wallet                 |
-| `GET`  | `/wallet/transactions` | ✅ JWT          | Get transactions of the authenticated user's wallet |
+| `POST` | `/wallet/add`          |  JWT          | Add money to the authenticated user's wallet        |
+| `POST` | `/wallet/transfer`     |  JWT          | Transfer money to another user's wallet             |
+| `GET`  | `/wallet`              |  JWT          | Get the authenticated user's wallet                 |
+| `GET`  | `/wallet/transactions` |  JWT          | Get transactions of the authenticated user's wallet |
 
 For protected APIs, send:
 
@@ -595,8 +595,8 @@ Authorization: Bearer <JWT_TOKEN>
 
 | Method | Endpoint              | Authentication | Description                      |
 | ------ | --------------------- | -------------- | -------------------------------- |
-| `GET`  | `/admin/wallets`      | ✅ Admin JWT    | Retrieve wallet information      |
-| `GET`  | `/admin/transactions` | ✅ Admin JWT    | Retrieve transaction information |
+| `GET`  | `/admin/wallets`      |  Admin JWT    | Retrieve wallet information      |
+| `GET`  | `/admin/transactions` |  Admin JWT    | Retrieve transaction information |
 
 Admin endpoints require an authenticated user with the appropriate admin role.
 
@@ -728,13 +728,11 @@ This performs the project tests and executes the configured JaCoCo coverage veri
 For a production financial system, the following could additionally be considered:
 
 * PostgreSQL/MySQL instead of H2
-* Flyway or Liquibase database migrations
 * External secret management
 * Docker containerization
 * CI/CD pipeline
 * Centralized logging and monitoring
 * Distributed tracing
-* Rate limiting
 * Refresh-token management
 * Audit logging
 * Production-grade observability
