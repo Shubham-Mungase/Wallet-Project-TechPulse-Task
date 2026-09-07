@@ -514,7 +514,133 @@ SonarQube can be used to inspect:
 * Security
 * Test coverage
 
-Do not commit SonarQube tokens or other credentials to the repository.
+# API Endpoints
+
+## Authentication APIs
+
+| Method | Endpoint         | Authentication | Description                           |
+| ------ | ---------------- | -------------- | ------------------------------------- |
+| `POST` | `/auth/register` |  Public       | Register a new user and create wallet |
+| `POST` | `/auth/login`    |  Public       | Authenticate user and receive JWT     |
+
+### Register
+
+```http
+POST /auth/register
+Content-Type: application/json
+```
+
+### Login
+
+```http
+POST /auth/login
+Content-Type: application/json
+```
+
+The JWT returned from login is required for protected wallet and admin APIs.
+
+---
+
+## Wallet APIs
+
+| Method | Endpoint               | Authentication | Description                                         |
+| ------ | ---------------------- | -------------- | --------------------------------------------------- |
+| `POST` | `/wallet/add`          | ✅ JWT          | Add money to the authenticated user's wallet        |
+| `POST` | `/wallet/transfer`     | ✅ JWT          | Transfer money to another user's wallet             |
+| `GET`  | `/wallet`              | ✅ JWT          | Get the authenticated user's wallet                 |
+| `GET`  | `/wallet/transactions` | ✅ JWT          | Get transactions of the authenticated user's wallet |
+
+For protected APIs, send:
+
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Add Money
+
+```http
+POST /wallet/add
+Authorization: Bearer <JWT_TOKEN>
+Content-Type: application/json
+```
+
+### Transfer Money
+
+```http
+POST /wallet/transfer
+Authorization: Bearer <JWT_TOKEN>
+Idempotency-Key: <UNIQUE_KEY>
+Content-Type: application/json
+```
+
+The `Idempotency-Key` is used to safely handle repeated transaction requests.
+
+### Get Wallet
+
+```http
+GET /wallet
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Get Transactions
+
+```http
+GET /wallet/transactions
+Authorization: Bearer <JWT_TOKEN>
+```
+
+---
+
+## Admin APIs
+
+| Method | Endpoint              | Authentication | Description                      |
+| ------ | --------------------- | -------------- | -------------------------------- |
+| `GET`  | `/admin/wallets`      | ✅ Admin JWT    | Retrieve wallet information      |
+| `GET`  | `/admin/transactions` | ✅ Admin JWT    | Retrieve transaction information |
+
+Admin endpoints require an authenticated user with the appropriate admin role.
+
+### Get All Wallets
+
+```http
+GET /admin/wallets
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+```
+
+### Get All Transactions
+
+```http
+GET /admin/transactions
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+```
+
+---
+
+## Complete API Flow
+
+```text
+                    AUTHENTICATION
+                         │
+             ┌───────────┴───────────┐
+             ▼                       ▼
+       POST /auth/register     POST /auth/login
+                                     │
+                                     ▼
+                                  JWT Token
+                                     │
+                 ┌───────────────────┴──────────────────┐
+                 │                                      │
+                 ▼                                      ▼
+             WALLET APIs                            ADMIN APIs
+                 │                                      │
+       ┌─────────┼─────────┐                    ┌───────┴────────┐
+       ▼         ▼         ▼                    ▼                ▼
+    POST /add  POST      GET /wallet       GET /wallets    GET /transactions
+              /transfer
+                           │
+                           ▼
+                   GET /transactions
+```
 
 ---
 
@@ -538,7 +664,7 @@ jwt:
 Set the environment variable before running the application:
 
 ```bash
-export JWT_SECRET="your-secret-value"
+export JWT_SECRET="random-32-character"
 ```
 
 ---
